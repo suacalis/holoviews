@@ -681,6 +681,12 @@ class Callable(param.Parameterized):
          the Callable, e.g. when it returns a Layout.""")
 
     def __init__(self, callable, **params):
+        """Callable constructor.
+
+        Args:
+            callable: The callable object held by this object
+            **params: Parameter declarations for the object
+        """
         super(Callable, self).__init__(callable=callable,
                                        **dict(params, name=util.callable_name(callable)))
         self._memoized = {}
@@ -945,6 +951,14 @@ class DynamicMap(HoloMap):
        the cache is full.""")
 
     def __init__(self, callback, initial_items=None, streams=None, **params):
+        """DynamicMap constructor.
+
+        Args:
+            callback: Callback used to generate elements
+            initial_items: Items in the DynamicMap cache
+            streams: List of streams the DynamicMap will subscribe to
+            **params: Parameter overrides for the object
+        """
         streams = (streams or [])
 
         # If callback is a parameterized method and watch is disabled add as stream
@@ -1933,6 +1947,13 @@ class GridSpace(UniformNdMapping):
     kdims = param.List(default=[Dimension("X"), Dimension("Y")], bounds=(1,2))
 
     def __init__(self, initial_items=None, kdims=None, **params):
+        """GridSpace constructor.
+
+        Args:
+            initial_items: List or dictionary of items held by the object
+            kdims: The key dimension(s) of the object
+            **params: Parameter overrides for the object
+        """
         super(GridSpace, self).__init__(initial_items, kdims=kdims, **params)
         if self.ndims > 2:
             raise Exception('Grids can have no more than two dimensions.')

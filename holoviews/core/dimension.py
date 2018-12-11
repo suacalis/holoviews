@@ -377,8 +377,11 @@ class Dimension(param.Parameterized):
                  # (name, unit) to a preset Dimension object
 
     def __init__(self, spec, **params):
-        """
-        Initializes the Dimension object with the given name.
+        """Dimension constructor.
+
+        Args:
+            spec: The name of the dimension or a tuple of the name and label
+            **params: Parameter overrides for the object
         """
         if 'name' in params:
             raise KeyError('Dimension name must only be passed as the positional argument')
@@ -621,11 +624,16 @@ class LabelledData(param.Parameterized):
     _deep_indexable = False
 
     def __init__(self, data, id=None, plot_id=None, **params):
-        """
-        All LabelledData subclasses must supply data to the
-        constructor, which will be held on the .data attribute.
-        This class also has an id instance attribute, which
-        may be set to associate some custom options with the object.
+        """LabelledData constructor.
+
+        Args:
+            data: Data held by the object
+            id: An id to link the object to a set of options
+            plot_id: A unique id used to detect clones of an object
+                The plot_id is used to determine if an object that
+                has been cloned is still contains the same data,
+                enabling plotting optimizations and linking the object.
+            **params: Parameter overrides for the object
         """
         self.data = data
         self.id = id
@@ -957,6 +965,14 @@ class Dimensioned(LabelledData):
                         constant_dimensions='cdims', deep_dimensions='ddims')
 
     def __init__(self, data, kdims=None, vdims=None, **params):
+        """Dimensioned constructor.
+
+        Args:
+            data: Data held by the object
+            kdims: The key dimension(s) of the object
+            vdims: The value dimension(s) of the object
+            **params: Parameter overrides for the object
+        """
         params.update(process_dimensions(kdims, vdims))
         if 'cdims' in params:
             params['cdims'] = {d if isinstance(d, Dimension) else Dimension(d): val
@@ -1482,6 +1498,14 @@ class ViewableTree(AttrTree, Dimensioned):
     _deep_indexable = True
 
     def __init__(self, items=None, identifier=None, parent=None, **kwargs):
+        """ViewableTree constructor.
+
+        Args:
+            items: List of items in the tree
+            identifier (optional): The name of this tree node
+            parent: The parent node of this tree node
+            **kwargs: Parameter overrides for the object
+        """
         if items and all(isinstance(item, Dimensioned) for item in items):
             items = self._process_items(items)
         params = {p: kwargs.pop(p) for p in list(self.params().keys())+['id', 'plot_id'] if p in kwargs}

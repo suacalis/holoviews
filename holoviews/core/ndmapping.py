@@ -96,6 +96,13 @@ class MultiDimensionalMapping(Dimensioned):
     _check_items = True
 
     def __init__(self, initial_items=None, kdims=None, **params):
+        """MultiDimensionalMapping constructor.
+
+        Args:
+            initial_items: List or dictionary of items held by the object
+            kdims: The key dimension(s) of the object
+            **params: Parameter declarations for the object
+        """
         if isinstance(initial_items, MultiDimensionalMapping):
             params = dict(util.get_param_values(initial_items),
                           **dict({'sort': self.sort}, **params))
@@ -805,6 +812,15 @@ class UniformNdMapping(NdMapping):
     _auxiliary_component = False
 
     def __init__(self, initial_items=None, kdims=None, group=None, label=None, **params):
+        """UniformNdMapping constructor.
+
+        Args:
+            initial_items: List or dictionary of items held by the object
+            kdims: The key dimension(s) of the object
+            group: Defines the group parameter
+            label: Defines the label parameter
+            **params: Parameter overrides for the object
+        """
         self._type = None
         self._group_check, self.group = None, group
         self._label_check, self.label = None, label
